@@ -15,7 +15,6 @@ public class Main {
 
         // Задание 3
         System.out.println(Lenses(new int[] {-1, 0, 1}));
-        System.out.println(Lenses(new int[] {-1, 3, -3, 7}));
     }
 
     // <summary> Задание 1 Среднее арифметическое цифр дробной части числа </summary>
@@ -23,24 +22,18 @@ public class Main {
     // <returns> Среднее арифметическое </returns>
     public static Double ArithmeticMean(Double x) {
 
-        if (x % 1 == 0) {
+        if (x % 1 == 0)
             return 0.0;
-        }
 
         String numStr = String.valueOf(x);
 
         int commaIndex = numStr.indexOf('.');
 
         double sum = 0;
-        int count = 0;
+        int count = numStr.length() - commaIndex - 1;
 
-        for (int i = commaIndex + 1; i < numStr.length(); i++) {
-            int digit = Character.getNumericValue(numStr.charAt(i));
-            if (digit >= 0 && digit <= 9) {
-                sum += digit;
-                count++;
-            }
-        }
+        for (int i = commaIndex + 1; i < numStr.length(); i++)
+            sum += Character.getNumericValue(numStr.charAt(i));
 
         return sum / count;
     }
