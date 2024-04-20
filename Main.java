@@ -6,6 +6,8 @@ public class Main {
     public static void main(String[] args) {
         // Задание 1
         System.out.println(ArithmeticMean(3.14));
+        System.out.println(ArithmeticMean(10.12345));
+        System.out.println(ArithmeticMean(5.0));
 
         // Задание 2
 //        var change = Vending(21, 50);
@@ -20,35 +22,27 @@ public class Main {
     // <returns> Среднее арифметическое </returns>
     public static Double ArithmeticMean(Double x) {
 
-        double remainder = x % 1;
-
-        if (remainder == 0) {
-            System.out.println("Результат: 0");
-            return;
-        }
-        // Преобразуем число в строку
-        String numberStr = Double.toString(x);
-
-        // Находим индекс символа запятой или точки
-        int decimalIndex = numberStr.indexOf('.');
-
-        // Обрезаем строку, начиная с индекса, следующего за запятой или точкой
-        remainderStr = numberStr.substring(decimalIndex + 1);
-
-        // Суммируем цифры остатка
-        int sum = 0;
-        for (int i = 0; i < remainderStr.length(); i++) {
-            int digit = Character.getNumericValue(remainderStr.charAt(i));
-            sum += digit;
+        if (x % 1 == 0) {
+            return 0.0;
         }
 
-        // Получаем количество символов после запятой в исходном числе
-        int decimalPlaces = String.valueOf(x).split("\\.")[1].length();
+        String numStr = String.valueOf(x);
 
-        // Вычисляем результат
-        double result = (double) sum / decimalPlaces;
+        int commaIndex = numStr.indexOf('.');
 
-        System.out.println("Результат: " + result);
+        double sum = 0;
+        int count = 0;
+
+        for (int i = commaIndex + 1; i < numStr.length(); i++) {
+            int digit = Character.getNumericValue(numStr.charAt(i));
+            if (digit >= 0 && digit <= 9) {
+                sum += digit;
+                count++;
+            }
+        }
+
+        double mean = sum / count;
+        return mean;
     }
 
     // <summary> Задание 2 ПО для вендингового аппарата </summary>
@@ -56,8 +50,17 @@ public class Main {
     // <param name="clientSum"> Внесенная сумма клиентом </param>
     // <returns> Сдача в виде словаря { номинал : количество }</returns>
     public static HashMap<Integer, Integer> Vending(int orderSum, int clientSum) {
-        //...
-        return new HashMap<Integer, Integer>();
+        HashMap<Integer, Integer> result = new HashMap<>();
+        int fin = clientSum - orderSum;
+        int[] denominations = {5000, 2000, 1000, 500, 200, 100, 50, 10, 5, 2, 1};
+
+        for (int denomination : denominations) {
+            while (fin >= denomination) {
+                result.put(denomination, result.getOrDefault(denomination, 0) + 1);
+                fin -= denomination;
+            }
+        }
+        return result;
     }
 
     // <summary> Задание 3 Заказы на линзы для Инопланетян </summary>
