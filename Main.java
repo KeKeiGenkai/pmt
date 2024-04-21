@@ -5,13 +5,11 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         // Задание 1
-//        System.out.println(ArithmeticMean(3.14));
-//        System.out.println(ArithmeticMean(10.12345));
-//        System.out.println(ArithmeticMean(5.0));
-//
-//        // Задание 2
-//        var change = Vending(21, 150);
-//        change.forEach((key, value) -> System.out.println(key + " " + value));
+        System.out.println(ArithmeticMean(3.14));
+
+        // Задание 2
+        var change = Vending(21, 50);
+        change.forEach((key, value) -> System.out.println(key + " " + value));
 
         // Задание 3
         System.out.println(Lenses(new int[] {-1, 0, 1}));
@@ -48,10 +46,10 @@ public class Main {
         int[] denominations = {5000, 2000, 1000, 500, 200, 100, 50, 10, 5, 2, 1};
 
         for (int denomination : denominations) {
-            int count = fin / denomination; // Сколько купюр данного номинала мы можем взять
+            int count = fin / denomination;
             if (count > 0) {
                 result.put(denomination, count);
-                fin -= count * denomination; // Уменьшаем остаток
+                fin -= count * denomination;
             }
         }
         return result;
@@ -62,30 +60,13 @@ public class Main {
     // <returns> Количество пар линз </returns>
     public static int Lenses(int[] dioptries) {
         int pairs = 0;
-        boolean[] used = new boolean[dioptries.length];
+
+        Arrays.sort(dioptries);
 
         for (int i = 0; i < dioptries.length; i++) {
-            if (!used[i]) {
-                int closestPositive = Integer.MAX_VALUE;
-                int closestNegative = Integer.MIN_VALUE;
-
-                for (int j = 0; j < dioptries.length; j++) {
-                    if (dioptries[j] > dioptries[i]) {
-                        closestPositive = Math.min(closestPositive, dioptries[j]);
-                    } else if (dioptries[j] <= dioptries[i]) {
-                        closestNegative = Math.max(closestNegative, dioptries[j]);
-                    }
-                }
-
-                // Ищем ближайшие пары линз для текущего инопланетянина
-                for (int j = 0; j < dioptries.length; j++) {
-                    if (dioptries[j] == closestPositive || dioptries[j] == closestNegative) {
-                        used[j] = true;
-                    }
-                }
-
-                pairs++;
-            }
+            if (i + 1 < dioptries.length && dioptries[i + 1] - dioptries[i] <= 2)
+                i++;
+            pairs++;
         }
 
         return pairs;
